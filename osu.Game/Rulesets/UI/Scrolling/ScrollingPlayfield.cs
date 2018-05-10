@@ -99,6 +99,6 @@ namespace osu.Game.Rulesets.UI.Scrolling
             return false;
         }
 
-        protected sealed override HitObjectContainer CreateHitObjectContainer() => new ScrollingHitObjectContainer(direction);
+        protected override HitObjectContainer CreateHitObjectContainer() => new ScrollingHitObjectContainer(direction);
     }
 }

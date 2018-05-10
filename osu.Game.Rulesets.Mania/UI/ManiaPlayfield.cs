@@ -13,6 +13,7 @@ using osu.Game.Rulesets.Mania.Beatmaps;
 using osu.Game.Rulesets.Mania.Configuration;
 using osu.Game.Rulesets.Mania.Objects;
 using osu.Game.Rulesets.Objects.Drawables;
+using osu.Game.Rulesets.UI;
 using osu.Game.Rulesets.UI.Scrolling;
 
 namespace osu.Game.Rulesets.Mania.UI
@@ -63,9 +64,17 @@ namespace osu.Game.Rulesets.Mania.UI
             }
         }
 
-        public override void Add(DrawableHitObject h) => getStageByColumn(((ManiaHitObject)h.HitObject).Column).Add(h);
+        public override void Add(DrawableHitObject h)
+        {
+            getStageByColumn(((ManiaHitObject)h.HitObject).Column).Add(h);
+            base.Add(h);
+        }
 
-        public override void Remove(DrawableHitObject h) => getStageByColumn(((ManiaHitObject)h.HitObject).Column).Remove(h);
+        public override void Remove(DrawableHitObject h)
+        {
+            getStageByColumn(((ManiaHitObject)h.HitObject).Column).Remove(h);
+            base.Remove(h);
+        }
 
         public void Add(BarLine barline) => stages.ForEach(s => s.Add(barline));
 
@@ -92,5 +101,7 @@ namespace osu.Game.Rulesets.Mania.UI
         {
             getStageByColumn(((ManiaHitObject)judgedObject.HitObject).Column).OnJudgement(judgedObject, judgement);
         }
+
+        protected override HitObjectContainer CreateHitObjectContainer() => new ManiaHitObjectContainer(ScrollingDirection.Up);
     }
 }
