@@ -167,6 +167,14 @@ namespace osu.Game.Rulesets.Mania.UI
             h.OnJudgement += OnJudgement;
         }
 
+        public override void Remove(DrawableHitObject h)
+        {
+            var maniaObject = (ManiaHitObject)h.HitObject;
+            int columnIndex = maniaObject.Column - firstColumnIndex;
+            Columns.ElementAt(columnIndex).Remove(h);
+            h.OnJudgement -= OnJudgement;
+        }
+
         public void Add(BarLine barline) => base.Add(new DrawableBarLine(barline));
 
         internal void OnJudgement(DrawableHitObject judgedObject, Judgement judgement)
