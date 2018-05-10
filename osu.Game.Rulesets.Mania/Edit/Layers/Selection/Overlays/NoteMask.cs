@@ -36,6 +36,9 @@ namespace osu.Game.Rulesets.Mania.Edit.Layers.Overlays
                     Origin = Anchor.TopCentre
                 }
             };
+
+            //TODO : if change the column then change the column as well
+            //note.HitObject.ColumnChanged += _ => Position = hitCircle.Position;
         }
     }
 }
