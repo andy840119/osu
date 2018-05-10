@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using osu.Framework.Graphics;
+﻿using osu.Framework.Graphics;
 using osu.Game.Rulesets.Edit;
 using osu.Game.Rulesets.Mania.Objects.Drawables;
 using osu.Game.Rulesets.Mania.Objects.Drawables.Pieces;
-using osu.Game.Rulesets.Objects.Drawables;
 
-namespace osu.Game.Rulesets.Mania.Edit.Layers.Overlays
+namespace osu.Game.Rulesets.Mania.Edit.Layers.Selection.Overlays
 {
     public class NoteMask : HitObjectMask
     {

@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// Copyright (c) 2007-2018 ppy Pty Ltd <contact@ppy.sh>.
+// Licensed under the MIT Licence - https://raw.githubusercontent.com/ppy/osu/master/LICENCE
+
 using osu.Game.Rulesets.Edit;
 using osu.Game.Rulesets.Mania.Objects.Drawables;
-using osu.Game.Rulesets.Objects.Drawables;
 
-namespace osu.Game.Rulesets.Mania.Edit.Layers.Overlays
+namespace osu.Game.Rulesets.Mania.Edit.Layers.Selection.Overlays
 {
     public class HoldNoteMask : HitObjectMask
     {
