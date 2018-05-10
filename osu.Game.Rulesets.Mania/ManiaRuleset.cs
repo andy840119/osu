@@ -15,6 +15,8 @@ using osu.Game.Graphics;
 using osu.Game.Rulesets.Mania.Replays;
 using osu.Game.Rulesets.Replays.Types;
 using osu.Game.Beatmaps.Legacy;
+using osu.Game.Rulesets.Edit;
+using osu.Game.Rulesets.Mania.Edit;
 
 namespace osu.Game.Rulesets.Mania
 {
@@ -175,6 +177,8 @@ namespace osu.Game.Rulesets.Mania
                     return new Mod[] { };
             }
         }
+
+        public override HitObjectComposer CreateHitObjectComposer() => new ManiaHitObjectComposer(this);
 
         public override string Description => "osu!mania";
 
