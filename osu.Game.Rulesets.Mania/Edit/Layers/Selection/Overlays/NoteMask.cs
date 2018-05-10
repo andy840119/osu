@@ -1,4 +1,6 @@
-﻿using osu.Framework.Graphics;
+﻿using osu.Framework.Allocation;
+using osu.Framework.Graphics;
+using osu.Game.Graphics;
 using osu.Game.Rulesets.Edit;
 using osu.Game.Rulesets.Mania.Objects.Drawables;
 using osu.Game.Rulesets.Mania.Objects.Drawables.Pieces;
@@ -35,6 +37,12 @@ namespace osu.Game.Rulesets.Mania.Edit.Layers.Selection.Overlays
 
             //TODO : if change the column then change the column as well
             //note.HitObject.ColumnChanged += _ => Position = hitCircle.Position;
+        }
+
+        [BackgroundDependencyLoader]
+        private void load(OsuColour colours)
+        {
+            Colour = colours.Yellow;
         }
     }
 }
