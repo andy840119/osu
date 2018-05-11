@@ -25,6 +25,7 @@ namespace osu.Game.Rulesets.Edit
 
         protected ICompositionTool CurrentTool { get; private set; }
 
+        public RulesetContainer RulesetContainer=> rulesetContainer;
         private RulesetContainer rulesetContainer;
         private readonly List<Container> layerContainers = new List<Container>();
 
@@ -60,7 +61,6 @@ namespace osu.Game.Rulesets.Edit
             };
 
             var layerAboveRuleset = CreateLayerContainer();
-            layerAboveRuleset.Child = new HitObjectMaskLayer(rulesetContainer.Playfield, this);
 
             layerContainers.Add(layerBelowRuleset);
             layerContainers.Add(layerAboveRuleset);
@@ -144,6 +144,6 @@ namespace osu.Game.Rulesets.Edit
         /// <summary>
         /// Creates a <see cref="ScalableContainer"/> which provides a layer above or below the <see cref="Playfield"/>.
         /// </summary>
-        protected virtual ScalableContainer CreateLayerContainer() => new ScalableContainer { RelativeSizeAxes = Axes.Both };
+        protected virtual ScalableContainer CreateLayerContainer() => new LayerContainer(this) { RelativeSizeAxes = Axes.Both };
     }
 }
