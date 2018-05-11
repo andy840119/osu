@@ -7,9 +7,9 @@ using osu.Game.Screens.Edit.Screens.Compose.Layers;
 
 namespace osu.Game.Rulesets.Mania.Edit.Layers
 {
-    public class ManiaLayerContaine : LayerContainer
+    public class ManiaLayerContainer : LayerContainer
     {
-        public ManiaLayerContaine(HitObjectComposer composer,float? customWidth = null, float? customHeight = null)
+        public ManiaLayerContainer(HitObjectComposer composer,float? customWidth = null, float? customHeight = null)
             : base(composer,customWidth, customHeight)
         {
 

@@ -61,6 +61,7 @@ namespace osu.Game.Rulesets.Edit
             };
 
             var layerAboveRuleset = CreateLayerContainer();
+            layerAboveRuleset.CreateLayer();
 
             layerContainers.Add(layerBelowRuleset);
             layerContainers.Add(layerAboveRuleset);
@@ -144,6 +145,6 @@ namespace osu.Game.Rulesets.Edit
         /// <summary>
         /// Creates a <see cref="ScalableContainer"/> which provides a layer above or below the <see cref="Playfield"/>.
         /// </summary>
-        protected virtual ScalableContainer CreateLayerContainer() => new LayerContainer(this) { RelativeSizeAxes = Axes.Both };
+        protected virtual LayerContainer CreateLayerContainer() => new LayerContainer(this) { RelativeSizeAxes = Axes.Both };
     }
 }

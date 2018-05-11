@@ -13,8 +13,6 @@ namespace osu.Game.Screens.Edit.Screens.Compose.Layers
             : base(customWidth, customHeight)
         {
             Composer = composer;
-
-            CreateLayer();
         }
 
         public virtual void CreateLayer()

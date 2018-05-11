@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using osu.Game.Rulesets.Edit;
 using osu.Game.Rulesets.Mania.Beatmaps;
 using osu.Game.Rulesets.Mania.Objects;
 using osu.Game.Rulesets.Mania.Objects.Drawables;
 using osu.Game.Rulesets.Mania.UI;
 using osu.Game.Rulesets.Objects.Drawables;
+using osu.Game.Rulesets.UI;
+using osu.Game.Rulesets.UI.Scrolling;
 
 namespace osu.Game.Rulesets.Mania.Edit
 {
@@ -15,6 +18,11 @@ namespace osu.Game.Rulesets.Mania.Edit
             : base(stageDefinitions)
         {
 
+        }
+
+        public void AddMask(HitObjectMask mask)
+        {
+            Add(mask);
         }
 
         public override void Add(DrawableHitObject h)
