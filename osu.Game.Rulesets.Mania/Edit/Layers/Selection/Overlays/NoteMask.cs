@@ -44,5 +44,10 @@ namespace osu.Game.Rulesets.Mania.Edit.Layers.Selection.Overlays
         {
             Colour = colours.Yellow;
         }
+
+        public override void Hide()
+        {
+
+        }
     }
 }
