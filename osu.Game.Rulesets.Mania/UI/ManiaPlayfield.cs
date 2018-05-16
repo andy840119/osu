@@ -8,6 +8,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Configuration;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Game.Rulesets.Edit;
 using osu.Game.Rulesets.Judgements;
 using osu.Game.Rulesets.Mania.Beatmaps;
 using osu.Game.Rulesets.Mania.Configuration;
@@ -62,6 +63,16 @@ namespace osu.Game.Rulesets.Mania.UI
 
                 firstColumnIndex += newStage.Columns.Count;
             }
+        }
+
+        public void AddMask(HitObjectMask mask)
+        {
+            getStageByColumn(((ManiaHitObject)mask.HitObject.HitObject).Column).Add(mask);
+        }
+
+        public void RemoveMask(HitObjectMask mask)
+        {
+            getStageByColumn(((ManiaHitObject)mask.HitObject.HitObject).Column).Remove(mask);
         }
 
         public override void Add(DrawableHitObject h)

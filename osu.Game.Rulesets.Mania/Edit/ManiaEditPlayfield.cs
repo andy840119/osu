@@ -20,11 +20,13 @@ namespace osu.Game.Rulesets.Mania.Edit
 
         }
 
+        /*
         public void AddMask(HitObjectMask mask)
         {
             //TODO :  here to add HitObjectMask into scrollPlayField 
             //Add(mask);
         }
+        */
 
         public override void Add(DrawableHitObject h)
         {
