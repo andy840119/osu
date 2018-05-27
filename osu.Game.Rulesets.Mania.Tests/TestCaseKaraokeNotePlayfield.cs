@@ -83,8 +83,8 @@ namespace osu.Game.Rulesets.Mania.Tests
                 //add playfield
                 var stages = new List<StageDefinition>
                 {
-                    new StageDefinition { Columns = 4 },
-                    new StageDefinition { Columns = 4 },
+                    new StageDefinition { Columns = 10 },
+                    new StageDefinition { Columns = 10 },
                 };
                 playfield = createPlayfield(stages);
 
@@ -262,7 +262,7 @@ namespace osu.Game.Rulesets.Mania.Tests
     /// </summary>
     internal class KaraokeStage : ScrollingPlayfield
     {
-        public const float HIT_TARGET_POSITION = 50;
+        public const float HIT_TARGET_POSITION = 200;
 
         /// <summary>
         /// Whether this playfield should be inverted. This flips everything inside the playfield.
@@ -319,7 +319,8 @@ namespace osu.Game.Rulesets.Mania.Tests
                                 {
                                     Name = "Background",
                                     RelativeSizeAxes = Axes.Both,
-                                    Colour = Color4.Black
+                                    Colour = Color4.Black,
+                                    Alpha = 0.5f,
                                 },
                                 columnFlow = new FillFlowContainer<Column>
                                 {
@@ -328,7 +329,7 @@ namespace osu.Game.Rulesets.Mania.Tests
                                     AutoSizeAxes = Axes.Y,
                                     Direction = FillDirection.Vertical,
                                     Padding = new MarginPadding { Top = 1, Bottom = 1 },
-                                    Spacing = new Vector2(1, 0)
+                                    Spacing = new Vector2(0, 1)
                                 },
                             }
                         },
@@ -464,8 +465,8 @@ namespace osu.Game.Rulesets.Mania.Tests
         private const float hit_target_width = 10;
         private const float hit_target_bar_width = 2;
 
-        private const float column_height = 30;
-        private const float special_column_height = 40;
+        private const float column_height = 25;
+        private const float special_column_height = 30;
 
         public ManiaAction Action;
 
@@ -500,7 +501,7 @@ namespace osu.Game.Rulesets.Mania.Tests
                 {
                     Name = "Hit target + hit objects",
                     RelativeSizeAxes = Axes.Both,
-                    Padding = new MarginPadding { Left = UI.ManiaStage.HIT_TARGET_POSITION },
+                    Padding = new MarginPadding { Left = KaraokeStage.HIT_TARGET_POSITION },
                     Children = new Drawable[]
                     {
                         new Container
@@ -545,11 +546,13 @@ namespace osu.Game.Rulesets.Mania.Tests
                         }
                     }
                 },
+                //TODO : this container is unnecessary
                 new Container
                 {
                     Name = "Key",
                     RelativeSizeAxes = Axes.Y,
-                    Width = UI.ManiaStage.HIT_TARGET_POSITION,
+                    Width = KaraokeStage.HIT_TARGET_POSITION,
+                    Alpha = 0,
                     Children = new Drawable[]
                     {
                         new Box
@@ -557,7 +560,7 @@ namespace osu.Game.Rulesets.Mania.Tests
                             Name = "Key gradient",
                             RelativeSizeAxes = Axes.Both,
                             Colour = ColourInfo.GradientVertical(Color4.Black, Color4.Black.Opacity(0)),
-                            Alpha = 0.5f
+                            Alpha = 0.3f
                         },
                         keyIcon = new Container
                         {
@@ -648,7 +651,10 @@ namespace osu.Game.Rulesets.Mania.Tests
             if (!judgement.IsHit)
                 return;
 
-            explosionContainer.Add(new HitExplosion(judgedObject));
+            explosionContainer.Add(new HitExplosion(judgedObject)
+            {
+                Anchor = Anchor.CentreLeft
+            });
         }
     }
 }
