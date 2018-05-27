@@ -421,8 +421,8 @@ namespace osu.Game.Rulesets.Mania.Tests
         {
             normalColumnColours = new List<Color4>
             {
-                colours.RedLight,
-                colours.GreenLight
+                colours.Gray0,
+                colours.Gray9
             };
 
             specialColumnColour = colours.BlueLight;
@@ -440,11 +440,11 @@ namespace osu.Game.Rulesets.Mania.Tests
 
             // We'll set the colours of the non-special columns in a separate loop, because the non-special
             // column colours are mirrored across their centre and special styles mess with this
-            for (int i = 0; i < Math.Ceiling(nonSpecialColumns.Count / 2f); i++)
+            for (int i = 0; i < nonSpecialColumns.Count; i++)
             {
                 Color4 colour = normalColumnColours[i % normalColumnColours.Count];
                 nonSpecialColumns[i].AccentColour = colour;
-                nonSpecialColumns[nonSpecialColumns.Count - 1 - i].AccentColour = colour;
+                //nonSpecialColumns[nonSpecialColumns.Count - 1 - i].AccentColour = colour;
             }
         }
 
@@ -462,7 +462,7 @@ namespace osu.Game.Rulesets.Mania.Tests
         private const float key_icon_corner_radius = 3;
         private const float key_icon_border_radius = 2;
 
-        private const float hit_target_width = 10;
+        private const float hit_target_width = 0;
         private const float hit_target_bar_width = 2;
 
         private const float column_height = 25;
