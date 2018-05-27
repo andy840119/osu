@@ -394,7 +394,7 @@ namespace osu.Game.Rulesets.Mania.Tests
         }
     }
 
-    public class Column : ScrollingPlayfield, IKeyBindingHandler<ManiaAction>, IHasAccentColour
+    public class Column : ScrollingPlayfield, IHasAccentColour
     {
         private const float key_icon_size = 10;
         private const float key_icon_corner_radius = 3;
@@ -475,12 +475,6 @@ namespace osu.Game.Rulesets.Mania.Tests
                         {
                             Name = "Hit objects",
                             RelativeSizeAxes = Axes.Both,
-                        },
-                        // For column lighting, we need to capture input events before the notes
-                        new InputTarget
-                        {
-                            Pressed = onPressed,
-                            Released = onReleased
                         },
                         explosionContainer = new Container
                         {
@@ -594,59 +588,5 @@ namespace osu.Game.Rulesets.Mania.Tests
 
             explosionContainer.Add(new HitExplosion(judgedObject));
         }
-
-        private bool onPressed(ManiaAction action)
-        {
-            if (action == Action)
-            {
-                background.FadeTo(opacity_pressed, 50, Easing.OutQuint);
-                keyIcon.ScaleTo(1.4f, 50, Easing.OutQuint);
-            }
-
-            return false;
-        }
-
-        private bool onReleased(ManiaAction action)
-        {
-            if (action == Action)
-            {
-                background.FadeTo(opacity_released, 800, Easing.OutQuart);
-                keyIcon.ScaleTo(1f, 400, Easing.OutQuart);
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// This is a simple container which delegates various input events that have to be captured before the notes.
-        /// </summary>
-        private class InputTarget : Container, IKeyBindingHandler<ManiaAction>
-        {
-            public Func<ManiaAction, bool> Pressed;
-            public Func<ManiaAction, bool> Released;
-
-            public InputTarget()
-            {
-                RelativeSizeAxes = Axes.Both;
-                AlwaysPresent = true;
-                Alpha = 0;
-            }
-
-            public bool OnPressed(ManiaAction action) => Pressed?.Invoke(action) ?? false;
-            public bool OnReleased(ManiaAction action) => Released?.Invoke(action) ?? false;
-        }
-
-        public bool OnPressed(ManiaAction action)
-        {
-            if (action != Action)
-                return false;
-
-            var hitObject = HitObjects.Objects.LastOrDefault(h => h.HitObject.StartTime > Time.Current) ?? HitObjects.Objects.FirstOrDefault();
-            hitObject?.PlaySamples();
-
-            return true;
-        }
-
-        public bool OnReleased(ManiaAction action) => false;
     }
 }
