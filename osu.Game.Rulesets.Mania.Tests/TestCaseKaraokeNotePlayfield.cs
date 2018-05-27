@@ -43,8 +43,43 @@ namespace osu.Game.Rulesets.Mania.Tests
         {
             var rng = new Random(1337);
 
-            AddStep("4 + 4 columns", () =>
+            /* 
+            AddStep("test columns", () =>
             {
+                Clear();
+                
+                var drawableNote = CreateDrawableHitObject();
+
+                var column = new Column();
+                column.VisibleTimeRange.Value = 1000;
+                column.VisibleTimeRange.TriggerChange();
+                column.AccentColour = Color4.Blue;
+                Add(column);
+
+                column.Add(drawableNote);
+            });
+            */
+
+            /* 
+            AddStep("test stage", () =>
+            {
+                Clear();
+
+                var drawableNote = CreateDrawableHitObject();
+
+                //add stage
+                var stage = new KaraokeStage(0,new StageDefinition(){Columns = 10});
+                Add(stage);
+
+                //add hit object 
+                stage.Add(drawableNote);
+            });
+            */
+
+            AddStep("test playField", () =>
+            {
+                var drawableNote = CreateDrawableHitObject();
+
                 //add playfield
                 var stages = new List<StageDefinition>
                 {
@@ -52,6 +87,8 @@ namespace osu.Game.Rulesets.Mania.Tests
                     new StageDefinition { Columns = 4 },
                 };
                 playfield = createPlayfield(stages);
+
+                playfield.Add(drawableNote);
             });
             
 
@@ -88,6 +125,28 @@ namespace osu.Game.Rulesets.Mania.Tests
 
                 playfield.Add(drawableNote);
             });
+        }
+
+        protected DrawableKaraokeNote CreateDrawableHitObject(int column = -1)
+        {
+            if(column == -1)
+            {
+                var rng = new Random(1337);
+                column = rng.Next(0, 4);
+            }
+
+            var note = new HoldNote { Column = column, Duration = 1000, StartTime  = 1000};
+            note.ApplyDefaults(new ControlPointInfo(), new BeatmapDifficulty());
+            var drawableNote = new DrawableKaraokeNote(note, ManiaAction.Key1)
+            {
+                X = 100,
+                Width = 100,
+                LifetimeStart = double.MinValue,
+                LifetimeEnd = double.MaxValue,
+                AccentColour = Color4.Red,
+            };
+
+            return drawableNote;
         }
 
         protected override IReadOnlyDependencyContainer CreateLocalDependencies(IReadOnlyDependencyContainer parent)
@@ -127,13 +186,13 @@ namespace osu.Game.Rulesets.Mania.Tests
         /// <summary>
         /// Whether this playfield should be inverted. This flips everything inside the playfield.
         /// </summary>
-        public readonly Bindable<bool> Inverted = new Bindable<bool>(true);
+        public readonly Bindable<bool> Inverted = new Bindable<bool>(false);
 
         public List<Column> Columns => stages.SelectMany(x => x.Columns).ToList();
         private readonly List<KaraokeStage> stages = new List<KaraokeStage>();
 
         public KaraokePlayfield(List<StageDefinition> stageDefinitions)
-            : base(ScrollingDirection.Up)
+            : base(ScrollingDirection.Left)
         {
             if (stageDefinitions == null)
                 throw new ArgumentNullException(nameof(stageDefinitions));
@@ -144,28 +203,29 @@ namespace osu.Game.Rulesets.Mania.Tests
             Inverted.Value = true;
 
             GridContainer playfieldGrid;
-            InternalChild = playfieldGrid = new GridContainer
-            {
-                RelativeSizeAxes = Axes.Both,
-                Content = new[] { new Drawable[stageDefinitions.Count] }
-            };
-
-            var normalColumnAction = ManiaAction.Key1;
-            var specialColumnAction = ManiaAction.Special1;
+            
             int firstColumnIndex = 0;
+
+            var content = new Drawable[stageDefinitions.Count][];
             for (int i = 0; i < stageDefinitions.Count; i++)
             {
-                var newStage = new KaraokeStage(firstColumnIndex, stageDefinitions[i], ref normalColumnAction, ref specialColumnAction);
+                var newStage = new KaraokeStage(firstColumnIndex, stageDefinitions[i]);
                 newStage.VisibleTimeRange.BindTo(VisibleTimeRange);
                 newStage.Inverted.BindTo(Inverted);
 
-                playfieldGrid.Content[0][i] = newStage;
+                content[i] = new[]{ newStage } ;
 
                 stages.Add(newStage);
                 AddNested(newStage);
 
                 firstColumnIndex += newStage.Columns.Count;
             }
+
+            InternalChild = playfieldGrid = new GridContainer
+            {
+                RelativeSizeAxes = Axes.Both,
+                Content = content,
+            };
         }
 
         public override void Add(DrawableHitObject h) => getStageByColumn(((ManiaHitObject)h.HitObject).Column).Add(h);
@@ -225,8 +285,8 @@ namespace osu.Game.Rulesets.Mania.Tests
 
         private readonly int firstColumnIndex;
 
-        public KaraokeStage(int firstColumnIndex, StageDefinition definition, ref ManiaAction normalColumnStartAction, ref ManiaAction specialColumnStartAction)
-            : base(ScrollingDirection.Up)
+        public KaraokeStage(int firstColumnIndex, StageDefinition definition)
+            : base(ScrollingDirection.Left)
         {
             this.firstColumnIndex = firstColumnIndex;
 
@@ -234,24 +294,24 @@ namespace osu.Game.Rulesets.Mania.Tests
 
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
-            RelativeSizeAxes = Axes.Y;
-            AutoSizeAxes = Axes.X;
+            RelativeSizeAxes = Axes.X;
+            AutoSizeAxes = Axes.Y;
 
             InternalChildren = new Drawable[]
             {
                 new Container
                 {
-                    Anchor = Anchor.TopCentre,
-                    Origin = Anchor.TopCentre,
-                    RelativeSizeAxes = Axes.Y,
-                    AutoSizeAxes = Axes.X,
+                    Anchor = Anchor.CentreLeft,
+                    Origin = Anchor.CentreLeft,
+                    RelativeSizeAxes = Axes.X,
+                    AutoSizeAxes = Axes.Y,
                     Children = new Drawable[]
                     {
                         new Container
                         {
                             Name = "Columns mask",
-                            RelativeSizeAxes = Axes.Y,
-                            AutoSizeAxes = Axes.X,
+                            RelativeSizeAxes = Axes.X,
+                            AutoSizeAxes = Axes.Y,
                             Masking = true,
                             Children = new Drawable[]
                             {
@@ -264,10 +324,10 @@ namespace osu.Game.Rulesets.Mania.Tests
                                 columnFlow = new FillFlowContainer<Column>
                                 {
                                     Name = "Columns",
-                                    RelativeSizeAxes = Axes.Y,
-                                    AutoSizeAxes = Axes.X,
-                                    Direction = FillDirection.Horizontal,
-                                    Padding = new MarginPadding { Left = 1, Right = 1 },
+                                    RelativeSizeAxes = Axes.X,
+                                    AutoSizeAxes = Axes.Y,
+                                    Direction = FillDirection.Vertical,
+                                    Padding = new MarginPadding { Top = 1, Bottom = 1 },
                                     Spacing = new Vector2(1, 0)
                                 },
                             }
@@ -277,8 +337,8 @@ namespace osu.Game.Rulesets.Mania.Tests
                             Name = "Barlines mask",
                             Anchor = Anchor.TopCentre,
                             Origin = Anchor.TopCentre,
-                            RelativeSizeAxes = Axes.Y,
-                            Width = 1366, // Bar lines should only be masked on the vertical axis
+                            RelativeSizeAxes = Axes.X,
+                            Height = 1366, // Bar lines should only be masked on the vertical axis
                             BypassAutoSizeAxes = Axes.Both,
                             Masking = true,
                             Child = content = new Container
@@ -286,16 +346,16 @@ namespace osu.Game.Rulesets.Mania.Tests
                                 Name = "Bar lines",
                                 Anchor = Anchor.TopCentre,
                                 Origin = Anchor.TopCentre,
-                                RelativeSizeAxes = Axes.Y,
-                                Padding = new MarginPadding { Top = HIT_TARGET_POSITION }
+                                RelativeSizeAxes = Axes.X,
+                                Padding = new MarginPadding { Left = HIT_TARGET_POSITION }
                             }
                         },
                         judgements = new JudgementContainer<DrawableManiaJudgement>
                         {
-                            Anchor = Anchor.TopCentre,
+                            Anchor = Anchor.CentreLeft,
                             Origin = Anchor.Centre,
                             AutoSizeAxes = Axes.Both,
-                            Y = HIT_TARGET_POSITION + 150,
+                            X = HIT_TARGET_POSITION + 150,
                             BypassAutoSizeAxes = Axes.Both
                         },
                         topLevelContainer = new Container { RelativeSizeAxes = Axes.Both }
@@ -309,7 +369,7 @@ namespace osu.Game.Rulesets.Mania.Tests
                 var column = new Column
                 {
                     IsSpecial = isSpecial,
-                    Action = isSpecial ? specialColumnStartAction++ : normalColumnStartAction++
+                    //Action = isSpecial ? specialColumnStartAction++ : normalColumnStartAction++
                 };
 
                 AddColumn(column);
@@ -321,7 +381,8 @@ namespace osu.Game.Rulesets.Mania.Tests
 
         private void invertedChanged(bool newValue)
         {
-            Scale = new Vector2(1, newValue ? -1 : 1);
+            //TODO : change the position but not change scale
+            //Scale = new Vector2(newValue ? -1 : 1,1);
             Judgements.Scale = Scale;
         }
 
@@ -359,11 +420,11 @@ namespace osu.Game.Rulesets.Mania.Tests
         {
             normalColumnColours = new List<Color4>
             {
-                colours.RedDark,
-                colours.GreenDark
+                colours.RedLight,
+                colours.GreenLight
             };
 
-            specialColumnColour = colours.BlueDark;
+            specialColumnColour = colours.BlueLight;
 
             // Set the special column + colour + key
             foreach (var column in Columns)
@@ -390,7 +451,7 @@ namespace osu.Game.Rulesets.Mania.Tests
         {
             // Due to masking differences, it is not possible to get the width of the columns container automatically
             // While masking on effectively only the Y-axis, so we need to set the width of the bar line container manually
-            content.Width = columnFlow.Width;
+            content.Height = columnFlow.Height;
         }
     }
 
@@ -400,11 +461,11 @@ namespace osu.Game.Rulesets.Mania.Tests
         private const float key_icon_corner_radius = 3;
         private const float key_icon_border_radius = 2;
 
-        private const float hit_target_height = 10;
-        private const float hit_target_bar_height = 2;
+        private const float hit_target_width = 10;
+        private const float hit_target_bar_width = 2;
 
-        private const float column_width = 45;
-        private const float special_column_width = 70;
+        private const float column_height = 30;
+        private const float special_column_height = 40;
 
         public ManiaAction Action;
 
@@ -422,10 +483,10 @@ namespace osu.Game.Rulesets.Mania.Tests
         private const float opacity_pressed = 0.25f;
 
         public Column()
-            : base(ScrollingDirection.Up)
+            : base(ScrollingDirection.Left)
         {
-            RelativeSizeAxes = Axes.Y;
-            Width = column_width;
+            RelativeSizeAxes = Axes.X;
+            Height = column_height;
 
             InternalChildren = new Drawable[]
             {
@@ -439,14 +500,14 @@ namespace osu.Game.Rulesets.Mania.Tests
                 {
                     Name = "Hit target + hit objects",
                     RelativeSizeAxes = Axes.Both,
-                    Padding = new MarginPadding { Top = UI.ManiaStage.HIT_TARGET_POSITION },
+                    Padding = new MarginPadding { Left = UI.ManiaStage.HIT_TARGET_POSITION },
                     Children = new Drawable[]
                     {
                         new Container
                         {
                             Name = "Hit target",
-                            RelativeSizeAxes = Axes.X,
-                            Height = hit_target_height,
+                            RelativeSizeAxes = Axes.Y,
+                            Width = hit_target_width,
                             Children = new Drawable[]
                             {
                                 new Box
@@ -458,8 +519,8 @@ namespace osu.Game.Rulesets.Mania.Tests
                                 hitTargetBar = new Container
                                 {
                                     Name = "Bar",
-                                    RelativeSizeAxes = Axes.X,
-                                    Height = hit_target_bar_height,
+                                    RelativeSizeAxes = Axes.Y,
+                                    Width = hit_target_bar_width,
                                     Masking = true,
                                     Children = new[]
                                     {
@@ -479,15 +540,16 @@ namespace osu.Game.Rulesets.Mania.Tests
                         explosionContainer = new Container
                         {
                             Name = "Hit explosions",
-                            RelativeSizeAxes = Axes.Both
+                            RelativeSizeAxes = Axes.Both,
+                            
                         }
                     }
                 },
                 new Container
                 {
                     Name = "Key",
-                    RelativeSizeAxes = Axes.X,
-                    Height = UI.ManiaStage.HIT_TARGET_POSITION,
+                    RelativeSizeAxes = Axes.Y,
+                    Width = UI.ManiaStage.HIT_TARGET_POSITION,
                     Children = new Drawable[]
                     {
                         new Box
@@ -525,7 +587,7 @@ namespace osu.Game.Rulesets.Mania.Tests
             TopLevelContainer.Add(explosionContainer.CreateProxy());
         }
 
-        public override Axes RelativeSizeAxes => Axes.Y;
+        public override Axes RelativeSizeAxes => Axes.X;
 
         private bool isSpecial;
         public bool IsSpecial
@@ -537,7 +599,7 @@ namespace osu.Game.Rulesets.Mania.Tests
                     return;
                 isSpecial = value;
 
-                Width = isSpecial ? special_column_width : column_width;
+                Height = isSpecial ? special_column_height : column_height;
             }
         }
 
