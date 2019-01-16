@@ -15,8 +15,8 @@ using osu.Game.Graphics.Sprites;
 using osu.Game.Overlays;
 using osu.Game.Overlays.Notifications;
 using osu.Game.Utils;
-using OpenTK;
-using OpenTK.Graphics;
+using osuTK;
+using osuTK.Graphics;
 
 namespace osu.Desktop.Overlays
 {
@@ -128,11 +128,12 @@ namespace osu.Desktop.Overlays
 
         protected override void PopIn()
         {
-            this.FadeIn(1000);
+            this.FadeIn(1400, Easing.OutQuint);
         }
 
         protected override void PopOut()
         {
+            this.FadeOut(500, Easing.OutQuint);
         }
     }
 }

@@ -5,7 +5,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
 using osu.Framework.Graphics.Containers;
-using OpenTK;
+using osuTK;
 using osu.Framework.Configuration;
 using osu.Framework.Input.Bindings;
 using osu.Framework.Input.Events;
@@ -25,7 +25,6 @@ namespace osu.Game.Graphics.Containers
         protected override bool BlockNonPositionalInput => true;
 
         private PreviewTrackManager previewTrackManager;
-
 
         protected readonly Bindable<OverlayActivation> OverlayActivationMode = new Bindable<OverlayActivation>(OverlayActivation.All);
 
