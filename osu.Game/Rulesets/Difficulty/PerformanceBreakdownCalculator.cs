@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
 using osu.Game.Beatmaps;
 using osu.Game.Rulesets.Mods;
 using osu.Game.Rulesets.Objects;
@@ -27,10 +26,9 @@ namespace osu.Game.Rulesets.Difficulty
             this.performanceCache = performanceCache;
         }
 
-        [ItemCanBeNull]
-        public async Task<PerformanceBreakdown> CalculateAsync(ScoreInfo score, CancellationToken cancellationToken = default)
+        public async Task<PerformanceBreakdown?> CalculateAsync(ScoreInfo score, CancellationToken cancellationToken = default)
         {
-            PerformanceAttributes[] performanceArray = await Task.WhenAll(
+            PerformanceAttributes?[] performanceArray = await Task.WhenAll(
                 // compute actual performance
                 performanceCache.CalculatePerformanceAsync(score, cancellationToken),
                 // compute performance for perfect play
@@ -40,8 +38,7 @@ namespace osu.Game.Rulesets.Difficulty
             return new PerformanceBreakdown { Performance = performanceArray[0], PerfectPerformance = performanceArray[1] };
         }
 
-        [ItemCanBeNull]
-        private Task<PerformanceAttributes> getPerfectPerformance(ScoreInfo score, CancellationToken cancellationToken = default)
+        private Task<PerformanceAttributes?> getPerfectPerformance(ScoreInfo score, CancellationToken cancellationToken = default)
         {
             return Task.Run(async () =>
             {

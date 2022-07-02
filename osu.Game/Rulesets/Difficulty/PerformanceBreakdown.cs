@@ -11,11 +11,11 @@ namespace osu.Game.Rulesets.Difficulty
         /// <summary>
         /// Actual gameplay performance.
         /// </summary>
-        public PerformanceAttributes Performance { get; set; }
+        public PerformanceAttributes Performance { get; set; } = null!;
 
         /// <summary>
         /// Performance of a perfect play for comparison.
         /// </summary>
-        public PerformanceAttributes PerfectPerformance { get; set; }
+        public PerformanceAttributes PerfectPerformance { get; set; } = null!;
     }
 }
