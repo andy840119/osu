@@ -12,7 +12,7 @@ namespace osu.Game.Rulesets.Difficulty.Utils
     /// Enqueuing an item pushes all existing indexes up by one and inserts the item at index 0.
     /// Dequeuing an item removes the item from the highest index and returns it.
     /// </summary>
-    public class ReverseQueue<T> : IEnumerable<T>
+    public class ReverseQueue<T> : IEnumerable<T>, IDisposable where T : notnull
     {
         /// <summary>
         /// The number of elements in the <see cref="ReverseQueue{T}"/>.
@@ -105,9 +105,13 @@ namespace osu.Game.Rulesets.Difficulty.Utils
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
+        public void Dispose()
+        {
+        }
+
         public struct Enumerator : IEnumerator<T>
         {
-            private ReverseQueue<T> reverseQueue;
+            private readonly ReverseQueue<T> reverseQueue;
             private int currentIndex;
 
             internal Enumerator(ReverseQueue<T> reverseQueue)
@@ -126,7 +130,7 @@ namespace osu.Game.Rulesets.Difficulty.Utils
 
             public void Dispose()
             {
-                reverseQueue = null;
+                reverseQueue.Dispose();
             }
         }
     }
