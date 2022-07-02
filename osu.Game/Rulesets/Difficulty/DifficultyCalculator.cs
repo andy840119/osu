@@ -23,9 +23,9 @@ namespace osu.Game.Rulesets.Difficulty
         /// <summary>
         /// The beatmap for which difficulty will be calculated.
         /// </summary>
-        protected IBeatmap Beatmap { get; private set; }
+        protected IBeatmap Beatmap { get; private set; } = null!;
 
-        private Mod[] playableMods;
+        private Mod[] playableMods = null!;
         private double clockRate;
 
         private readonly IRulesetInfo ruleset;
