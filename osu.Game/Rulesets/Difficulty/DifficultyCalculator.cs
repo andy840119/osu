@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using JetBrains.Annotations;
 using osu.Framework.Audio.Track;
 using osu.Framework.Extensions.IEnumerableExtensions;
 using osu.Game.Beatmaps;
@@ -57,7 +56,7 @@ namespace osu.Game.Rulesets.Difficulty
         /// <param name="mods">The mods that should be applied to the beatmap.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A structure describing the difficulty of the beatmap.</returns>
-        public DifficultyAttributes Calculate([NotNull] IEnumerable<Mod> mods, CancellationToken cancellationToken = default)
+        public DifficultyAttributes Calculate(IEnumerable<Mod> mods, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             preProcess(mods, cancellationToken);
@@ -93,7 +92,7 @@ namespace osu.Game.Rulesets.Difficulty
         /// <param name="mods">The mods that should be applied to the beatmap.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The set of <see cref="TimedDifficultyAttributes"/>.</returns>
-        public List<TimedDifficultyAttributes> CalculateTimed([NotNull] IEnumerable<Mod> mods, CancellationToken cancellationToken = default)
+        public List<TimedDifficultyAttributes> CalculateTimed(IEnumerable<Mod> mods, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             preProcess(mods, cancellationToken);
@@ -135,7 +134,7 @@ namespace osu.Game.Rulesets.Difficulty
 
             foreach (var combination in CreateDifficultyAdjustmentModCombinations())
             {
-                Mod classicMod = rulesetInstance.CreateAllMods().SingleOrDefault(m => m is ModClassic);
+                Mod? classicMod = rulesetInstance.CreateAllMods().SingleOrDefault(m => m is ModClassic);
 
                 var finalCombination = ModUtils.FlattenMod(combination);
                 if (classicMod != null)
@@ -155,7 +154,7 @@ namespace osu.Game.Rulesets.Difficulty
         /// </summary>
         /// <param name="mods">The original list of <see cref="Mod"/>s.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        private void preProcess([NotNull] IEnumerable<Mod> mods, CancellationToken cancellationToken = default)
+        private void preProcess(IEnumerable<Mod> mods, CancellationToken cancellationToken = default)
         {
             playableMods = mods.Select(m => m.DeepClone()).ToArray();
 
