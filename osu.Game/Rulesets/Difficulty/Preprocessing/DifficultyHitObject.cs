@@ -63,8 +63,8 @@ namespace osu.Game.Rulesets.Difficulty.Preprocessing
             EndTime = hitObject.GetEndTime() / clockRate;
         }
 
-        public DifficultyHitObject Previous(int backwardsIndex) => difficultyHitObjects.ElementAtOrDefault(Index - (backwardsIndex + 1));
+        public DifficultyHitObject? Previous(int backwardsIndex) => difficultyHitObjects.ElementAtOrDefault(Index - (backwardsIndex + 1));
 
-        public DifficultyHitObject Next(int forwardsIndex) => difficultyHitObjects.ElementAtOrDefault(Index + (forwardsIndex + 1));
+        public DifficultyHitObject? Next(int forwardsIndex) => difficultyHitObjects.ElementAtOrDefault(Index + (forwardsIndex + 1));
     }
 }
