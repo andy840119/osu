@@ -31,7 +31,7 @@ namespace osu.Game.Rulesets.Osu.Mods
         public override double ScoreMultiplier => UsesDefaultConfiguration ? 1.12 : 1;
         public override Type[] IncompatibleMods => new[] { typeof(OsuModFlashlight) };
 
-        private DrawableOsuBlinds blinds;
+        private DrawableOsuBlinds blinds = null!;
 
         public void ApplyToDrawableRuleset(DrawableRuleset<OsuHitObject> drawableRuleset)
         {
@@ -53,9 +53,9 @@ namespace osu.Game.Rulesets.Osu.Mods
             /// <summary>
             /// Black background boxes behind blind panel textures.
             /// </summary>
-            private Box blackBoxLeft, blackBoxRight;
+            private Box blackBoxLeft = null!, blackBoxRight = null!;
 
-            private Drawable panelLeft, panelRight, bgPanelLeft, bgPanelRight;
+            private Drawable panelLeft = null!, panelRight = null!, bgPanelLeft = null!, bgPanelRight = null!;
 
             private readonly Beatmap<OsuHitObject> beatmap;
 
