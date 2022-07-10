@@ -29,7 +29,7 @@ namespace osu.Game.Rulesets.Osu.Mods
         private bool isDownState;
         private bool wasLeft;
 
-        private OsuInputManager osuInputManager;
+        private OsuInputManager osuInputManager = null!;
 
         private ReplayState<OsuAction>? state;
         private double lastStateChangeTime;

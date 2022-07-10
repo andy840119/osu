@@ -51,7 +51,7 @@ namespace osu.Game.Rulesets.Osu.Mods
 
         public override float DefaultFlashlightSize => 180;
 
-        private OsuFlashlight flashlight;
+        private OsuFlashlight flashlight = null!;
 
         protected override Flashlight CreateFlashlight() => flashlight = new OsuFlashlight(this);
 

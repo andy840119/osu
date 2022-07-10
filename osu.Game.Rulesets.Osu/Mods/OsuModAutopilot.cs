@@ -28,11 +28,11 @@ namespace osu.Game.Rulesets.Osu.Mods
 
         public bool RestartOnFail => false;
 
-        private OsuInputManager inputManager;
+        private OsuInputManager inputManager = null!;
 
-        private IFrameStableClock gameplayClock;
+        private IFrameStableClock gameplayClock = null!;
 
-        private List<OsuReplayFrame> replayFrames;
+        private List<OsuReplayFrame> replayFrames = null!;
 
         private int currentFrame;
 

@@ -94,11 +94,11 @@ namespace osu.Game.Rulesets.Osu.Mods
 
         #region Private Fields
 
-        private ControlPointInfo controlPointInfo;
+        private ControlPointInfo controlPointInfo = null!;
 
-        private List<OsuHitObject> originalHitObjects;
+        private List<OsuHitObject> originalHitObjects = null!;
 
-        private Random rng;
+        private Random rng = null!;
 
         #endregion
 
