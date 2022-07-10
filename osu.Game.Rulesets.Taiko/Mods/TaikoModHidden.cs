@@ -30,7 +30,7 @@ namespace osu.Game.Rulesets.Taiko.Mods
         /// </summary>
         private const float fade_out_duration = 0.375f;
 
-        private DrawableTaikoRuleset drawableRuleset;
+        private DrawableTaikoRuleset drawableRuleset = null!;
 
         public void ApplyToDrawableRuleset(DrawableRuleset<TaikoHitObject> drawableRuleset)
         {

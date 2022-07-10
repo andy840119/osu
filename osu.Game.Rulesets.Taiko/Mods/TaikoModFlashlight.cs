@@ -38,7 +38,7 @@ namespace osu.Game.Rulesets.Taiko.Mods
 
         protected override Flashlight CreateFlashlight() => new TaikoFlashlight(this, playfield);
 
-        private TaikoPlayfield playfield;
+        private TaikoPlayfield playfield = null!;
 
         public override void ApplyToDrawableRuleset(DrawableRuleset<TaikoHitObject> drawableRuleset)
         {

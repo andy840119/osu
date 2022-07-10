@@ -10,7 +10,7 @@ namespace osu.Game.Rulesets.Taiko.Mods
 {
     public class TaikoModClassic : ModClassic, IApplicableToDrawableRuleset<TaikoHitObject>, IUpdatableByPlayfield
     {
-        private DrawableTaikoRuleset drawableTaikoRuleset;
+        private DrawableTaikoRuleset drawableTaikoRuleset = null!;
 
         public void ApplyToDrawableRuleset(DrawableRuleset<TaikoHitObject> drawableRuleset)
         {
