@@ -1,8 +1,6 @@
 ﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 
-#nullable disable
-
 using osuTK;
 using osu.Game.Rulesets.Objects.Types;
 using System;
@@ -11,7 +9,6 @@ using System.IO;
 using osu.Game.Beatmaps.Formats;
 using osu.Game.Audio;
 using System.Linq;
-using JetBrains.Annotations;
 using osu.Framework.Extensions.EnumExtensions;
 using osu.Framework.Utils;
 using osu.Game.Beatmaps.Legacy;
@@ -43,7 +40,6 @@ namespace osu.Game.Rulesets.Objects.Legacy
             FormatVersion = formatVersion;
         }
 
-        [CanBeNull]
         public override HitObject Parse(string text)
         {
             string[] split = text.Split(',');
@@ -63,7 +59,7 @@ namespace osu.Game.Rulesets.Objects.Legacy
             var soundType = (LegacyHitSoundType)Parsing.ParseInt(split[4]);
             var bankInfo = new SampleBankInfo();
 
-            HitObject result = null;
+            HitObject? result = null;
 
             if (type.HasFlagFast(LegacyHitObjectType.Circle))
             {
@@ -192,10 +188,10 @@ namespace osu.Game.Rulesets.Objects.Legacy
             var bank = (LegacySampleBank)Parsing.ParseInt(split[0]);
             var addBank = (LegacySampleBank)Parsing.ParseInt(split[1]);
 
-            string stringBank = bank.ToString().ToLowerInvariant();
+            string? stringBank = bank.ToString().ToLowerInvariant();
             if (stringBank == @"none")
                 stringBank = null;
-            string stringAddBank = addBank.ToString().ToLowerInvariant();
+            string? stringAddBank = addBank.ToString().ToLowerInvariant();
             if (stringAddBank == @"none")
                 stringAddBank = null;
 
@@ -269,7 +265,7 @@ namespace osu.Game.Rulesets.Objects.Legacy
 
                 // Multi-segmented sliders DON'T contain the end point as part of the current segment as it's assumed to be the start of the next segment.
                 // The start of the next segment is the index after the type descriptor.
-                string endPoint = endIndex < pointSplit.Length - 1 ? pointSplit[endIndex + 1] : null;
+                string? endPoint = endIndex < pointSplit.Length - 1 ? pointSplit[endIndex + 1] : null;
 
                 controlPoints.AddRange(convertPoints(pointSplit.AsMemory().Slice(startIndex, endIndex - startIndex), endPoint, first, offset));
                 startIndex = endIndex;
@@ -290,7 +286,7 @@ namespace osu.Game.Rulesets.Objects.Legacy
         /// <param name="first">Whether this is the first segment in the set. If <c>true</c> the first of the returned segments will contain a zero point.</param>
         /// <param name="offset">The positional offset to apply to the control points.</param>
         /// <returns>The set of points contained by <paramref name="points"/> as one or more segments of the path, prepended by an extra zero point if <paramref name="first"/> is <c>true</c>.</returns>
-        private IEnumerable<Memory<PathControlPoint>> convertPoints(ReadOnlyMemory<string> points, string endPoint, bool first, Vector2 offset)
+        private IEnumerable<Memory<PathControlPoint>> convertPoints(ReadOnlyMemory<string> points, string? endPoint, bool first, Vector2 offset)
         {
             PathType type = convertPathType(points.Span[0]);
 
@@ -435,7 +431,7 @@ namespace osu.Game.Rulesets.Objects.Legacy
         /// <param name="newCombo">Whether the hit object creates a new combo.</param>
         /// <param name="comboOffset">When starting a new combo, the offset of the new combo relative to the current one.</param>
         /// <param name="duration">The hold duration.</param>
-        protected abstract HitObject CreateHold(Vector2 position, bool newCombo, int comboOffset, double duration);
+        protected abstract HitObject? CreateHold(Vector2 position, bool newCombo, int comboOffset, double duration);
 
         private List<HitSampleInfo> convertSoundType(LegacyHitSoundType type, SampleBankInfo bankInfo)
         {
@@ -470,19 +466,19 @@ namespace osu.Game.Rulesets.Objects.Legacy
             /// <summary>
             /// An optional overriding filename which causes all bank/sample specifications to be ignored.
             /// </summary>
-            public string Filename;
+            public string Filename = string.Empty;
 
             /// <summary>
             /// The bank identifier to use for the base ("hitnormal") sample.
             /// Transferred to <see cref="HitSampleInfo.Bank"/> when appropriate.
             /// </summary>
-            public string BankForNormal;
+            public string BankForNormal = string.Empty;
 
             /// <summary>
             /// The bank identifier to use for additions ("hitwhistle", "hitfinish", "hitclap").
             /// Transferred to <see cref="HitSampleInfo.Bank"/> when appropriate.
             /// </summary>
-            public string BankForAdditions;
+            public string BankForAdditions = string.Empty;
 
             /// <summary>
             /// Hit sample volume (0-100).
