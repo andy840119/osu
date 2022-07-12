@@ -20,11 +20,11 @@ namespace osu.Game.Rulesets.Objects.Legacy
         /// <summary>
         /// <see cref="ConvertSlider"/>s don't need a curve since they're converted to ruleset-specific hitobjects.
         /// </summary>
-        public SliderPath Path { get; set; }
+        public SliderPath Path { get; init; }
 
         public double Distance => Path.Distance;
 
-        public IList<IList<HitSampleInfo>> NodeSamples { get; set; }
+        public IList<IList<HitSampleInfo>> NodeSamples { get; set; } = new List<IList<HitSampleInfo>>();
         public int RepeatCount { get; set; }
 
         [JsonIgnore]
