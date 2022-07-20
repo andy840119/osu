@@ -33,7 +33,7 @@ namespace osu.Game.Rulesets.Osu.Tests.Mods
 
         private void runSpmTest(Mod mod)
         {
-            SpinnerSpmCalculator spmCalculator = null;
+            SpinnerSpmCalculator? spmCalculator = null;
 
             CreateModTest(new ModTestData
             {
@@ -59,7 +59,7 @@ namespace osu.Game.Rulesets.Osu.Tests.Mods
                 return spmCalculator != null;
             });
 
-            AddUntilStep("SPM is correct", () => Precision.AlmostEquals(spmCalculator.Result.Value, 477, 5));
+            AddUntilStep("SPM is correct", () => Precision.AlmostEquals(spmCalculator!.Result.Value, 477, 5));
         }
     }
 }
